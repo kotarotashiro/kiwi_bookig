@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約 - Kiwi no Kuni</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <h1 class="logo"><a href="index.html">Kiwi no Kuni</a></h1>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">ホーム</a></li>
+          <li><a href="products.html" class="nav-link">商品</a></li>
+          <li><a href="experiences.html" class="nav-link">体験</a></li>
+          <li><a href="contact.html" class="nav-link">お問い合わせ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="back-link">
+        <a href="experiences.html"><i class="fas fa-chevron-left"></i> 体験一覧に戻る</a>
+      </div>
+
+      <h2 class="page-title">キウイ収穫体験の予約</h2>
+
+      <div class="booking-container">
+        <div class="booking-main">
+          <!-- ステップ1: 日時選択 -->
+          <div class="booking-step" id="step1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">日付を選択</h3>
+                <p class="card-description">カレンダーから予約希望日を選択してください</p>
+              </div>
+              <div class="card-content">
+                <div class="calendar-container">
+                  <input type="text" id="datepicker" class="date-picker" placeholder="日付を選択">
+                </div>
+              </div>
+            </div>
+
+            <div class="card time-slot-card" id="timeSlotCard" style="display: none;">
+              <div class="card-header">
+                <h3 class="card-title">時間を選択</h3>
+                <p class="card-description" id="selectedDateDisplay"></p>
+              </div>
+              <div class="card-content">
+                <div class="time-slots" id="timeSlots">
+                  <!-- 時間枠はJavaScriptで動的に生成 -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ステップ2: 個人情報入力 -->
+          <div class="booking-step" id="step2" style="display: none;">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">お客様情報</h3>
+                <p class="card-description">予約者情報を入力してください</p>
+              </div>
+              <div class="card-content">
+                <form id="customerForm">
+                  <div class="form-group">
+                    <label for="customerName">お名前 <span class="required">*</span></label>
+                    <input type="text" id="customerName" placeholder="例：山田 太郎" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">メールアドレス <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="例：example@email.com" required>
+                    <p class="form-hint">予約確認メールをお送りします</p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="phone">電話番号 <span class="required">*</span></label>
+                    <input type="tel" id="phone" placeholder="例：090-1234-5678" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="notes">備考</label>
+                    <textarea id="notes" placeholder="アレルギーや特別なご要望などがあればご記入ください"></textarea>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">予約内容</h3>
+            </div>
+            <div class="card-content">
+              <div class="booking-summary">
+                <div class="summary-item">
+                  <h4 class="summary-label">体験</h4>
+                  <p class="summary-value">キウイ収穫体験</p>
+                </div>
+
+                <div class="summary-item">
+                  <h4 class="summary-label">日付</h4>
+                  <p class="summary-value" id="summaryDate">日付を選択してください</p>
+                </div>
+
+                <div class="summary-item">
+                  <h4 class="summary-label">時間</h4>
+                  <p class="summary-value" id="summaryTime">時間を選択してください</p>
+                </div>
+
+                <div class="summary-item">
+                  <h4 class="summary-label">参加人数</h4>
+                  <div class="select-wrapper">
+                    <select id="participants">
+                      <option value="1">1名</option>
+                      <option value="2">2名</option>
+                      <option value="3">3名</option>
+                      <option value="4">4名</option>
+                      <option value="5">5名</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="summary-price">
+                  <div class="price-row">
+                    <span>料金（1名あたり）</span>
+                    <span>¥3,800</span>
+                  </div>
+                  <div class="price-row total">
+                    <span>合計</span>
+                    <span id="totalPrice">¥3,800</span>
+                  </div>
+                </div>
+
+                <div class="booking-actions">
+                  <button id="nextButton" class="btn btn-primary btn-block" disabled>次へ進む</button>
+                  <button id="backButton" class="btn btn-outline btn-block" style="display: none;">戻る</button>
+                  <button id="submitButton" class="btn btn-primary btn-block" style="display: none;">予約を確定する</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="copyright">© 2023 Kiwi no Kuni - All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="toast-message">
+        <div class="toast-title" id="toastTitle"></div>
+        <div class="toast-description" id="toastDescription"></div>
+      </div>
+      <button class="toast-close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>
