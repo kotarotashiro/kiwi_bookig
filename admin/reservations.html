@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約管理 - Kiwi no Kuni 管理画面</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body class="wp-admin">
+  <div class="admin-bar">
+    <div class="admin-bar-left">
+      <span class="site-name">Kiwi no Kuni</span>
+    </div>
+    <div class="admin-bar-right">
+      <a href="#" class="admin-bar-item"><span class="notification-count">3</span>通知</a>
+      <a href="#" class="admin-bar-item">新規作成</a>
+      <div class="admin-user">
+        <img src="../img/admin-avatar.png" alt="管理者" class="admin-avatar">
+        <span>管理者</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wp-container">
+    <div class="wp-sidebar">
+      <ul class="wp-menu">
+        <li class="wp-menu-item">
+          <a href="index.html">
+            <span class="dashicons">📊</span>
+            <span class="menu-text">ダッシュボード</span>
+          </a>
+        </li>
+        <li class="wp-menu-item active">
+          <a href="reservations.html">
+            <span class="dashicons">📅</span>
+            <span class="menu-text">予約管理</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="calendar.html">
+            <span class="dashicons">📆</span>
+            <span class="menu-text">カレンダー</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="experiences.html">
+            <span class="dashicons">🌱</span>
+            <span class="menu-text">体験プログラム</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="customers.html">
+            <span class="dashicons">👥</span>
+            <span class="menu-text">顧客管理</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="reports.html">
+            <span class="dashicons">📈</span>
+            <span class="menu-text">レポート</span>
+          </a>
+        </li>
+        <li class="wp-menu-item has-submenu">
+          <a href="#">
+            <span class="dashicons">⚙️</span>
+            <span class="menu-text">設定</span>
+          </a>
+          <ul class="wp-submenu">
+            <li><a href="settings-general.html">一般設定</a></li>
+            <li><a href="email-settings.html">メール設定</a></li>
+            <li><a href="settings-payment.html">支払い設定</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="wp-content">
+      <div class="wp-header">
+        <h1>予約管理</h1>
+        <div class="wp-header-actions">
+          <button class="wp-button primary" id="new-reservation">新規予約</button>
+          <button class="wp-button" id="export-csv">CSVエクスポート</button>
+        </div>
+      </div>
+
+      <div class="wp-main">
+        <div class="wp-box">
+          <div class="wp-box-header">
+            <div class="filter-bar">
+              <div class="filter-group">
+                <select id="filter-status">
+                  <option value="">すべての状態</option>
+                  <option value="confirmed">確定</option>
+                  <option value="pending">保留</option>
+                  <option value="cancelled">キャンセル</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <select id="filter-experience">
+                  <option value="">すべての体験</option>
+                  <option value="harvest">キウイ収穫体験</option>
+                  <option value="planting">キウイ植樹体験</option>
+                </select>
+              </div>
+              <div class="filter-group date-range">
+                <input type="text" id="filter-date-from" placeholder="開始日" class="date-picker">
+                <span>〜</span>
+                <input type="text" id="filter-date-to" placeholder="終了日" class="date-picker">
+              </div>
+              <div class="filter-group">
+                <input type="text" id="search-reservations" placeholder="検索...">
+              </div>
+              <button class="wp-button" id="apply-filters">フィルター適用</button>
+              <button class="wp-button secondary" id="reset-filters">リセット</button>
+            </div>
+          </div>
+          <div class="wp-box-content">
+            <div class="wp-table-container">
+              <table class="wp-table reservations-table">
+                <thead>
+                  <tr>
+                    <th class="check-column">
+                      <input type="checkbox" id="select-all">
+                    </th>
+                    <th class="sortable" data-sort="id">予約ID</th>
+                    <th class="sortable" data-sort="date">予約日時</th>
+                    <th class="sortable" data-sort="customer">顧客名</th>
+                    <th class="sortable" data-sort="experience">体験</th>
+                    <th class="sortable" data-sort="participants">人数</th>
+                    <th class="sortable" data-sort="total">合計金額</th>
+                    <th class="sortable" data-sort="status">状態</th>
+                    <th class="sortable" data-sort="created">作成日</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="1234"></td>
+                    <td>KW-20230516-1234</td>
+                    <td>2023/05/16 11:00</td>
+                    <td>山田 太郎</td>
+                    <td>キウイ収穫体験</td>
+                    <td>2名</td>
+                    <td>¥7,600</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>2023/05/10</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="8765"></td>
+                    <td>KW-20230515-8765</td>
+                    <td>2023/05/15 13:00</td>
+                    <td>佐藤 花子</td>
+                    <td>キウイ植樹体験</td>
+                    <td>3名</td>
+                    <td>¥13,500</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>2023/05/09</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="5432"></td>
+                    <td>KW-20230514-5432</td>
+                    <td>2023/05/14 15:00</td>
+                    <td>鈴木 一郎</td>
+                    <td>キウイ収穫体験</td>
+                    <td>1名</td>
+                    <td>¥3,800</td>
+                    <td><span class="status-badge cancelled">キャンセル</span></td>
+                    <td>2023/05/08</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="9876"></td>
+                    <td>KW-20230513-9876</td>
+                    <td>2023/05/13 12:00</td>
+                    <td>高橋 健太</td>
+                    <td>キウイ植樹体験</td>
+                    <td>4名</td>
+                    <td>¥18,000</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>2023/05/07</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="2468"></td>
+                    <td>KW-20230512-2468</td>
+                    <td>2023/05/12 14:00</td>
+                    <td>田中 美咲</td>
+                    <td>キウイ収穫体験</td>
+                    <td>2名</td>
+                    <td>¥7,600</td>
+                    <td><span class="status-badge pending">保留</span></td>
+                    <td>2023/05/06</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="1357"></td>
+                    <td>KW-20230511-1357</td>
+                    <td>2023/05/11 11:00</td>
+                    <td>伊藤 直樹</td>
+                    <td>キウイ収穫体験</td>
+                    <td>3名</td>
+                    <td>¥11,400</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>2023/05/05</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="reservation[]" value="2468"></td>
+                    <td>KW-20230510-2468</td>
+                    <td>2023/05/10 15:00</td>
+                    <td>渡辺 裕子</td>
+                    <td>キウイ植樹体験</td>
+                    <td>2名</td>
+                    <td>¥9,000</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>2023/05/04</td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                        <a href="#" class="action-delete">削除</a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="wp-pagination">
+              <div class="pagination-info">全 42 件中 1-7 件を表示</div>
+              <div class="pagination-links">
+                <span class="pagination-link disabled">«</span>
+                <span class="pagination-link current">1</span>
+                <a href="#" class="pagination-link">2</a>
+                <a href="#" class="pagination-link">3</a>
+                <a href="#" class="pagination-link">4</a>
+                <a href="#" class="pagination-link">5</a>
+                <a href="#" class="pagination-link">6</a>
+                <a href="#" class="pagination-link">»</a>
+              </div>
+              <div class="pagination-per-page">
+                <select id="per-page">
+                  <option value="10">10件</option>
+                  <option value="25">25件</option>
+                  <option value="50">50件</option>
+                  <option value="100">100件</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 予約詳細モーダル -->
+  <div id="reservation-modal" class="wp-modal">
+    <div class="wp-modal-content">
+      <div class="wp-modal-header">
+        <h2>予約詳細: <span id="modal-reservation-id">KW-20230516-1234</span></h2>
+        <button class="wp-modal-close">&times;</button>
+      </div>
+      <div class="wp-modal-body">
+        <div class="reservation-details">
+          <div class="detail-section">
+            <h3>予約情報</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">体験</div>
+                <div class="detail-value">キウイ収穫体験</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">日時</div>
+                <div class="detail-value">2023年5月16日(火) 11:00 ~ 12:00</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">参加人数</div>
+                <div class="detail-value">2名</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">合計金額</div>
+                <div class="detail-value">¥7,600</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">状態</div>
+                <div class="detail-value">
+                  <select id="reservation-status">
+                    <option value="confirmed" selected>確定</option>
+                    <option value="pending">保留</option>
+                    <option value="cancelled">キャンセル</option>
+                  </select>
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">予約日</div>
+                <div class="detail-value">2023年5月10日 14:25</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>顧客情報</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">氏名</div>
+                <div class="detail-value">山田 太郎</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">メールアドレス</div>
+                <div class="detail-value">yamada@example.com</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">電話番号</div>
+                <div class="detail-value">090-1234-5678</div>
+              </div>
+              <div class="detail-item full-width">
+                <div class="detail-label">備考</div>
+                <div class="detail-value">アレルギーはありません。駐車場の利用を希望します。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>メール履歴</h3>
+            <div class="email-history">
+              <div class="email-item">
+                <div class="email-header">
+                  <div class="email-type">予約確認メール</div>
+                  <div class="email-date">2023/05/10 14:25</div>
+                </div>
+                <div class="email-status sent">送信済み</div>
+              </div>
+              <div class="email-item">
+                <div class="email-header">
+                  <div class="email-type">リマインダーメール</div>
+                  <div class="email-date">2023/05/15 10:00</div>
+                </div>
+                <div class="email-status sent">送信済み</div>
+              </div>
+            </div>
+            <div class="email-actions">
+              <button class="wp-button">メールを再送信</button>
+              <button class="wp-button">カスタムメール送信</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wp-modal-footer">
+        <button class="wp-button secondary" id="modal-close">閉じる</button>
+        <button class="wp-button primary" id="modal-save">変更を保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <div class="toast-message">
+        <div class="toast-title" id="toastTitle"></div>
+        <div class="toast-description" id="toastDescription"></div>
+      </div>
+      <button class="toast-close">×</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/reservations.js"></script>
+</body>
+</html>

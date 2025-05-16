@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ダッシュボード - Kiwi no Kuni 管理画面</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body class="wp-admin">
+  <div class="admin-bar">
+    <div class="admin-bar-left">
+      <span class="site-name">Kiwi no Kuni</span>
+    </div>
+    <div class="admin-bar-right">
+      <a href="#" class="admin-bar-item"><span class="notification-count">3</span>通知</a>
+      <a href="#" class="admin-bar-item">新規作成</a>
+      <div class="admin-user">
+        <img src="../img/admin-avatar.png" alt="管理者" class="admin-avatar">
+        <span>管理者</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wp-container">
+    <div class="wp-sidebar">
+      <ul class="wp-menu">
+        <li class="wp-menu-item active">
+          <a href="index.html">
+            <span class="dashicons">📊</span>
+            <span class="menu-text">ダッシュボード</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="reservations.html">
+            <span class="dashicons">📅</span>
+            <span class="menu-text">予約管理</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="calendar.html">
+            <span class="dashicons">📆</span>
+            <span class="menu-text">カレンダー</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="experiences.html">
+            <span class="dashicons">🌱</span>
+            <span class="menu-text">体験プログラム</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="customers.html">
+            <span class="dashicons">👥</span>
+            <span class="menu-text">顧客管理</span>
+          </a>
+        </li>
+        <li class="wp-menu-item">
+          <a href="reports.html">
+            <span class="dashicons">📈</span>
+            <span class="menu-text">レポート</span>
+          </a>
+        </li>
+        <li class="wp-menu-item has-submenu">
+          <a href="#">
+            <span class="dashicons">⚙️</span>
+            <span class="menu-text">設定</span>
+          </a>
+          <ul class="wp-submenu">
+            <li><a href="settings-general.html">一般設定</a></li>
+            <li><a href="email-settings.html">メール設定</a></li>
+            <li><a href="settings-payment.html">支払い設定</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="wp-content">
+      <div class="wp-header">
+        <h1>ダッシュボード</h1>
+        <div class="wp-header-actions">
+          <select id="date-range">
+            <option value="today">今日</option>
+            <option value="yesterday">昨日</option>
+            <option value="7days" selected>過去7日間</option>
+            <option value="30days">過去30日間</option>
+            <option value="custom">カスタム期間</option>
+          </select>
+          <div id="custom-date-range" style="display: none;">
+            <input type="text" id="date-from" placeholder="開始日">
+            <span>〜</span>
+            <input type="text" id="date-to" placeholder="終了日">
+          </div>
+        </div>
+      </div>
+
+      <div class="wp-main">
+        <!-- 統計カード -->
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+              <div class="stat-value">42</div>
+              <div class="stat-label">予約総数</div>
+            </div>
+            <div class="stat-trend positive">
+              <span>+12%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-content">
+              <div class="stat-value">¥159,600</div>
+              <div class="stat-label">売上</div>
+            </div>
+            <div class="stat-trend positive">
+              <span>+8%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">👤</div>
+            <div class="stat-content">
+              <div class="stat-value">68</div>
+              <div class="stat-label">参加者数</div>
+            </div>
+            <div class="stat-trend positive">
+              <span>+15%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">❌</div>
+            <div class="stat-content">
+              <div class="stat-value">3</div>
+              <div class="stat-label">キャンセル数</div>
+            </div>
+            <div class="stat-trend negative">
+              <span>-25%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ダッシュボードウィジェット -->
+        <div class="dashboard-widgets">
+          <!-- 最近の予約 -->
+          <div class="wp-widget">
+            <div class="wp-widget-header">
+              <h3>最近の予約</h3>
+              <a href="reservations.html" class="view-all">すべて表示</a>
+            </div>
+            <div class="wp-widget-content">
+              <table class="wp-table">
+                <thead>
+                  <tr>
+                    <th>予約ID</th>
+                    <th>顧客名</th>
+                    <th>体験</th>
+                    <th>日時</th>
+                    <th>人数</th>
+                    <th>状態</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>KW-20230516-1234</td>
+                    <td>山田 太郎</td>
+                    <td>キウイ収穫体験</td>
+                    <td>2023/05/16 11:00</td>
+                    <td>2名</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>KW-20230515-8765</td>
+                    <td>佐藤 花子</td>
+                    <td>キウイ植樹体験</td>
+                    <td>2023/05/15 13:00</td>
+                    <td>3名</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>KW-20230514-5432</td>
+                    <td>鈴木 一郎</td>
+                    <td>キウイ収穫体験</td>
+                    <td>2023/05/14 15:00</td>
+                    <td>1名</td>
+                    <td><span class="status-badge cancelled">キャンセル</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>KW-20230513-9876</td>
+                    <td>高橋 健太</td>
+                    <td>キウイ植樹体験</td>
+                    <td>2023/05/13 12:00</td>
+                    <td>4名</td>
+                    <td><span class="status-badge confirmed">確定</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>KW-20230512-2468</td>
+                    <td>田中 美咲</td>
+                    <td>キウイ収穫体験</td>
+                    <td>2023/05/12 14:00</td>
+                    <td>2名</td>
+                    <td><span class="status-badge pending">保留</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="#" class="action-view">表示</a>
+                        <a href="#" class="action-edit">編集</a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 予約状況グラフと体験別予約数 -->
+          <div class="widget-row">
+            <div class="wp-widget">
+              <div class="wp-widget-header">
+                <h3>予約状況</h3>
+                <div class="widget-actions">
+                  <select id="chart-type">
+                    <option value="daily">日別</option>
+                    <option value="weekly" selected>週別</option>
+                    <option value="monthly">月別</option>
+                  </select>
+                </div>
+              </div>
+              <div class="wp-widget-content">
+                <div class="chart-container">
+                  <div class="chart-placeholder">
+                    <div class="chart-bars">
+                      <div class="chart-bar" style="height: 30%;" data-label="5/10"></div>
+                      <div class="chart-bar" style="height: 45%;" data-label="5/11"></div>
+                      <div class="chart-bar" style="height: 60%;" data-label="5/12"></div>
+                      <div class="chart-bar" style="height: 75%;" data-label="5/13"></div>
+                      <div class="chart-bar" style="height: 90%;" data-label="5/14"></div>
+                      <div class="chart-bar" style="height: 65%;" data-label="5/15"></div>
+                      <div class="chart-bar" style="height: 40%;" data-label="5/16"></div>
+                    </div>
+                    <div class="chart-labels">
+                      <div class="chart-label">5/10</div>
+                      <div class="chart-label">5/11</div>
+                      <div class="chart-label">5/12</div>
+                      <div class="chart-label">5/13</div>
+                      <div class="chart-label">5/14</div>
+                      <div class="chart-label">5/15</div>
+                      <div class="chart-label">5/16</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wp-widget">
+              <div class="wp-widget-header">
+                <h3>体験別予約数</h3>
+              </div>
+              <div class="wp-widget-content">
+                <div class="pie-chart-container">
+                  <div class="pie-chart">
+                    <div class="pie-slice" style="--percentage: 65%; --color: #4ade80;"></div>
+                    <div class="pie-slice" style="--percentage: 35%; --color: #f59e0b;"></div>
+                  </div>
+                  <div class="pie-legend">
+                    <div class="legend-item">
+                      <span class="legend-color" style="background-color: #4ade80;"></span>
+                      <span class="legend-label">キウイ収穫体験 (65%)</span>
+                    </div>
+                    <div class="legend-item">
+                      <span class="legend-color" style="background-color: #f59e0b;"></span>
+                      <span class="legend-label">キウイ植樹体験 (35%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 今後の予定 -->
+          <div class="wp-widget">
+            <div class="wp-widget-header">
+              <h3>今後の予定</h3>
+              <a href="calendar.html" class="view-all">カレンダーを表示</a>
+            </div>
+            <div class="wp-widget-content">
+              <div class="upcoming-events">
+                <div class="event-date">
+                  <div class="date-header">今日</div>
+                  <div class="event-item">
+                    <div class="event-time">11:00 - 12:00</div>
+                    <div class="event-details">
+                      <div class="event-title">キウイ収穫体験</div>
+                      <div class="event-meta">予約: 2件 / 参加者: 5名</div>
+                    </div>
+                    <div class="event-status">
+                      <span class="status-badge confirmed">確定</span>
+                    </div>
+                  </div>
+                  <div class="event-item">
+                    <div class="event-time">14:00 - 15:00</div>
+                    <div class="event-details">
+                      <div class="event-title">キウイ植樹体験</div>
+                      <div class="event-meta">予約: 1件 / 参加者: 3名</div>
+                    </div>
+                    <div class="event-status">
+                      <span class="status-badge confirmed">確定</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="event-date">
+                  <div class="date-header">明日</div>
+                  <div class="event-item">
+                    <div class="event-time">13:00 - 14:00</div>
+                    <div class="event-details">
+                      <div class="event-title">キウイ収穫体験</div>
+                      <div class="event-meta">予約: 3件 / 参加者: 7名</div>
+                    </div>
+                    <div class="event-status">
+                      <span class="status-badge confirmed">確定</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="event-date">
+                  <div class="date-header">5月18日 (木)</div>
+                  <div class="event-item">
+                    <div class="event-time">11:00 - 12:00</div>
+                    <div class="event-details">
+                      <div class="event-title">キウイ収穫体験</div>
+                      <div class="event-meta">予約: 1件 / 参加者: 2名</div>
+                    </div>
+                    <div class="event-status">
+                      <span class="status-badge confirmed">確定</span>
+                    </div>
+                  </div>
+                  <div class="event-item">
+                    <div class="event-time">15:00 - 16:00</div>
+                    <div class="event-details">
+                      <div class="event-title">キウイ植樹体験</div>
+                      <div class="event-meta">予約: 2件 / 参加者: 4名</div>
+                    </div>
+                    <div class="event-status">
+                      <span class="status-badge pending">保留</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <div class="toast-message">
+        <div class="toast-title" id="toastTitle"></div>
+        <div class="toast-description" id="toastDescription"></div>
+      </div>
+      <button class="toast-close">×</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>
