@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メール設定 - Kiwi no Kuni 管理画面</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="admin-logo">Kiwi no Kuni+</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> ダッシュボード</a></li>
+          <li><a href="products.html"><i class="fas fa-shopping-bag"></i> 商品管理</a></li>
+          <li><a href="experiences.html"><i class="fas fa-calendar-alt"></i> 体験管理</a></li>
+          <li><a href="posts.html"><i class="fas fa-file-alt"></i> 投稿</a></li>
+          <li><a href="seasons.html"><i class="fas fa-leaf"></i> 季節設定</a></li>
+          <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> 売上分析</a></li>
+          <li class="active"><a href="settings.html"><i class="fas fa-cog"></i> 設定</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../logout.html"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
+      </div>
+    </aside>
+
+    <div class="admin-content">
+      <header class="admin-header">
+        <h2>メール設定</h2>
+      </header>
+
+      <main class="admin-main">
+        <div class="tabs">
+          <div class="tab-list">
+            <button class="tab-button active" data-tab="smtp">SMTP設定</button>
+            <button class="tab-button" data-tab="templates">メールテンプレート</button>
+            <button class="tab-button" data-tab="notifications">通知設定</button>
+          </div>
+
+          <div class="tab-content active" id="smtp">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">SMTP設定</h3>
+                <p class="card-description">メール送信に使用するSMTPサーバーの設定を行います</p>
+              </div>
+              <div class="card-content">
+                <form id="smtpForm">
+                  <div class="form-group">
+                    <label for="smtp_host">SMTPサーバー <span class="required">*</span></label>
+                    <input type="text" id="smtp_host" placeholder="例：smtp.gmail.com" required>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="smtp_port">ポート <span class="required">*</span></label>
+                      <input type="text" id="smtp_port" placeholder="例：587" value="587" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="smtp_secure">セキュア接続 (SSL/TLS)</label>
+                      <div class="switch-container">
+                        <label class="switch">
+                          <input type="checkbox" id="smtp_secure">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="smtp_user">ユーザー名 <span class="required">*</span></label>
+                    <input type="text" id="smtp_user" placeholder="例：your-email@gmail.com" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="smtp_password">パスワード <span class="required">*</span></label>
+                    <input type="password" id="smtp_password" placeholder="SMTPパスワードまたはアプリパスワード" required>
+                    <p class="form-hint">Gmailを使用する場合は、アカウントの2段階認証を有効にし、アプリパスワードを生成してください。</p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="test_email">テストメール送信</label>
+                    <div class="input-with-button">
+                      <input type="email" id="test_email" placeholder="テスト送信先のメールアドレス">
+                      <button type="button" id="sendTestBtn" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i> テスト送信
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save"></i> 設定を保存
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="templates">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">メールテンプレート</h3>
+                <p class="card-description">各種メールのテンプレートをカスタマイズできます</p>
+              </div>
+              <div class="card-content">
+                <div class="template-grid">
+                  <div class="template-card">
+                    <div class="template-header">
+                      <h4>予約確認メール</h4>
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="template-body">
+                      <p>予約が完了した際に自動送信されるメールテンプレートです。</p>
+                      <button class="btn btn-sm btn-outline">編集する</button>
+                    </div>
+                  </div>
+
+                  <div class="template-card">
+                    <div class="template-header">
+                      <h4>予約リマインダー</h4>
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="template-body">
+                      <p>予約日の前日に送信されるリマインダーメールのテンプレートです。</p>
+                      <button class="btn btn-sm btn-outline">編集する</button>
+                    </div>
+                  </div>
+
+                  <div class="template-card">
+                    <div class="template-header">
+                      <h4>キャンセル確認</h4>
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="template-body">
+                      <p>予約がキャンセルされた際に送信されるメールのテンプレートです。</p>
+                      <button class="btn btn-sm btn-outline">編集する</button>
+                    </div>
+                  </div>
+
+                  <div class="template-card">
+                    <div class="template-header">
+                      <h4>管理者通知</h4>
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="template-body">
+                      <p>新規予約があった際に管理者に送信される通知メールのテンプレートです。</p>
+                      <button class="btn btn-sm btn-outline">編集する</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="notifications">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">通知設定</h3>
+                <p class="card-description">メール通知の送信タイミングと内容を設定します</p>
+              </div>
+              <div class="card-content">
+                <div class="notification-settings">
+                  <div class="notification-item">
+                    <div class="notification-info">
+                      <h4>予約確認メール</h4>
+                      <p>予約完了時に顧客に送信されます</p>
+                    </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="notification-item">
+                    <div class="notification-info">
+                      <h4>予約リマインダー</h4>
+                      <p>予約日の前日に顧客に送信されます</p>
+                    </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="notification-item">
+                    <div class="notification-info">
+                      <h4>キャンセル確認</h4>
+                      <p>予約がキャンセルされた際に顧客に送信されます</p>
+                    </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="notification-item">
+                    <div class="notification-info">
+                      <h4>管理者通知（新規予約）</h4>
+                      <p>新規予約があった際に管理者に通知されます</p>
+                    </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="notification-item">
+                    <div class="notification-info">
+                      <h4>管理者通知（キャンセル）</h4>
+                      <p>予約がキャンセルされた際に管理者に通知されます</p>
+                    </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group admin-email-group">
+                  <label for="admin_email">管理者メールアドレス</label>
+                  <input type="email" id="admin_email" placeholder="例：admin@kiwinokuni.example.com">
+                  <p class="form-hint">複数のメールアドレスを登録する場合は、カンマ（,）で区切ってください。</p>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn btn-primary">
+                    <i class="fas fa-save"></i> 設定を保存
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="toast-message">
+        <div class="toast-title" id="toastTitle"></div>
+        <div class="toast-description" id="toastDescription"></div>
+      </div>
+      <button class="toast-close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+
+  <script src="../js/admin.js"></script>
+  <script src="../js/email-settings.js"></script>
+</body>
+</html>
